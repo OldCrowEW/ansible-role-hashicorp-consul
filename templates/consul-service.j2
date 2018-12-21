@@ -1,0 +1,26 @@
+# Systemd unit file for Hashicorp Consul
+
+[Unit]
+Description="HashiCorp Consul - A service mesh solution"
+Documentation=https://www.consul.io
+Requires=network-online.target
+After=network-online.target
+ConditionFileNotEmpty={{ consul_config }}
+
+[Service]
+Type=simple
+WorkingDirectory={{ consul_run_dir }}
+User={{ consul_user }}
+Group={{ consul_group }}
+PermissionsStartOnly=true
+EnvironmentFile=-{{ consul_sysconfig }}
+ExecStart={{ consul_exec }} agent -config-file={{ consul_config }} -config-dir={{ consul_confd_dir }} $CMD_OPTS
+ExecReload={{ consul_exec_reload }}
+KillMode=process
+Restart=on-failure
+KillSignal=SIGTERM
+LimitNOFILE=65536
+RestartSec=42s
+
+[Install]
+WantedBy=multi-user.target

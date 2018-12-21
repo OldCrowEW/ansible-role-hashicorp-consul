@@ -1,0 +1,36 @@
+---
+# defaults file for ansible-role-hashicorp-consul
+consul_service: "consul"
+consul_user: "consul"
+consul_group: "consul"
+
+consul_version: "1.4.0"
+consul_os: "linux"
+consul_arch: "amd64"
+
+consul_download: "https://releases.hashicorp.com/consul/{{ consul_version }}/consul_{{ consul_version }}_{{ consul_os }}_{{ consul_arch }}.zip"
+
+sysconfdir: "/etc"
+sysconfig_dir: "{{ sysconfdir }}/sysconfig"
+localstatedir: "/var"
+sharedstatedir: "{{ localstatedir }}/lib"
+sbindir: "/usr/sbin"
+rundir: "{{ localstatedir }}/run"
+unitdir: "/lib/systemd/system"
+
+consul_data_dir: "{{ sharedstatedir }}/{{ consul_service }}"
+consul_run_dir: "{{ rundir }}/{{ consul_service }}"
+consul_conf_dir: "{{ sysconfdir }}/{{ consul_service }}"
+consul_confd_dir: "{{ consul_conf_dir }}/conf.d"
+
+consul_config: "{{ consul_conf_dir }}/{{ consul_service }}.hcl"
+consul_sysconfig: "{{ sysconfig_dir }}/{{ consul_service }}"
+consul_systemd_file: "{{ unitdir }}/{{ consul_service }}.service"
+
+consul_exec: "{{ sbindir }}/{{ consul_service }}"
+consul_exec_reload: "{{ consul_exec }} reload"
+consul_command_opts: "-server -bootstrap -ui"
+
+consul_bind_addr: "0.0.0.0"
+consul_client_addr: "0.0.0.0"
+consul_http_port: "8500"

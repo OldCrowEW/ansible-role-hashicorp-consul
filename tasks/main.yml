@@ -1,0 +1,79 @@
+---
+# tasks file for ansible-role-hashicorp-consul
+- name: Ensure {{ consul_group }} group exists
+  group:
+    name: "{{ consul_group }}"
+    state: present
+
+- name: Ensure {{ consul_user }} user exists
+  user:
+    name: "{{ consul_user }}"
+    shell: "/sbin/nologin"
+    home: "{{ consul_run_dir }}"
+    group: "{{ consul_group }}"
+    system: true
+
+- name: Ensure unzip package is available for Ansible unarchive task
+  yum:
+    name: unzip
+    state: present
+  when: ansible_distribution != 'Debian' or ansible_distribution != 'Ubuntu'
+
+- name: Download and extract Hashicorp Consul
+  unarchive:
+    src: "{{ consul_download }}"
+    dest: "{{ sbindir }}"
+    remote_src: true
+
+- name: Ensure Hashicorp Consul {{ consul_conf_dir }} directory exists
+  file:
+    path: "{{ consul_conf_dir }}"
+    state: directory
+
+- name: Copy Hashicorp {{ consul_config }} configuration
+  template:
+    src: consul-hcl.j2
+    dest: "{{ consul_config }}"
+    owner: "{{ consul_user }}"
+    group: "{{ consul_group }}"
+    mode: 0640
+  notify: restart-consul
+
+- name: Ensure Hashicorp Consul {{ consul_confd_dir }} directory exists
+  file:
+    path: "{{ consul_confd_dir }}"
+    owner: "{{ consul_user }}"
+    group: "{{ consul_group }}"
+    state: directory
+
+- name: Copy Hashicorp {{ consul_sysconfig }} configuration
+  template:
+    src: consul-sysconfig.j2
+    dest: "{{ consul_sysconfig }}"
+  notify: restart-consul
+
+- name: Ensure Hashicorp Consul {{ consul_data_dir }} directory exists
+  file:
+    path: "{{ consul_data_dir }}"
+    state: directory
+    owner: "{{ consul_user }}"
+    group: "{{ consul_group }}"
+
+- name: Ensure Hashicorp Consul {{ consul_run_dir }} directory exists
+  file:
+    path: "{{ consul_run_dir }}"
+    state: directory
+
+- name: Copy Hashicorp Consul Systemd Unit file
+  template:
+    src: consul-service.j2
+    dest: "{{ consul_systemd_file }}"
+  notify: restart-consul
+
+- meta: flush_handlers
+
+- name: Ensure Hashicorp Consul is started and enabled
+  service:
+    name: consul
+    state: started
+    enabled: true
