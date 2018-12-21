@@ -2,15 +2,15 @@
 galaxy_info:
   role_name: consul
   author: John Favorite
-  description: your description
+  description: Consul is a distributed service mesh to connect, secure, and configure services across any runtime platform and public or private cloud.
   company: n/a
 
-  license: license (GPLv2, CC-BY, etc)
+  license: license (BSD, MIT)
 
   min_ansible_version: 2.4
 
   platforms:
-    - name: CentOS
+    - name: EL
       versions:
         - 7
 
