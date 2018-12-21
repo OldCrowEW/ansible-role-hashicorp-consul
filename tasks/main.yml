@@ -24,6 +24,8 @@
     src: "{{ consul_download }}"
     dest: "{{ sbindir }}"
     remote_src: true
+  register: consul_download_result
+  until: consul_download_result is succeeded
 
 - name: Ensure Hashicorp Consul {{ consul_conf_dir }} directory exists
   file:
