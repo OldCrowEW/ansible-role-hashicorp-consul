@@ -5,7 +5,7 @@
 Consul is a distributed service mesh to connect, secure, and configure services across any runtime platform and public
 or private cloud.
 
-This role deploys one node with bootstrap, server and ui role(s).
+This role deploys consul in client mode by default with vars to set bootstrap, server and ui role(s).
 
 ## Requirements
 
@@ -31,9 +31,21 @@ None.
 
 ## Example Playbook
 
+    # This will get you client only mode
     - hosts: servers
       roles:
          - { role: ansible-role-hashicorp-consul }
+
+
+    # This will get you server, bootstrap and ui
+    - hosts: servers
+
+       vars:
+         consul_server: true
+         consul_bootstrap: true
+         consul_ui: true
+       roles:
+          - { role: ansible-role-hashicorp-consul }
 
 ## License
 
