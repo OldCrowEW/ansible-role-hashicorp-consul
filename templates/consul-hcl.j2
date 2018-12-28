@@ -1,5 +1,13 @@
-{
-  "data_dir": "{{ consul_data_dir }}",
-  "bind_addr": "{{ consul_bind_addr }}",
-  "client_addr": "{{ consul_client_addr }}"
-}
+datacenter = "{{ consul_datacenter}}"
+data_dir = "{{ consul_data_dir }}"
+{% if consul_server == true %}
+server = true
+{% endif %}
+{% if consul_bootstrap == true %}
+bootstrap = true
+{% endif %}
+{% if consul_ui == true %}
+ui = true
+{% endif %}
+bind_addr = "{{ consul_bind_addr }}"
+client_addr = "{{ consul_client_addr }}"
