@@ -29,8 +29,13 @@ consul_systemd_file: "{{ unitdir }}/{{ consul_service }}.service"
 
 consul_exec: "{{ sbindir }}/{{ consul_service }}"
 consul_exec_reload: "{{ consul_exec }} reload"
-consul_command_opts: "-server -bootstrap -ui"
+consul_command_opts: ""
 
 consul_bind_addr: "0.0.0.0"
 consul_client_addr: "0.0.0.0"
 consul_http_port: "8500"
+
+consul_datacenter: "dc1"
+consul_server: "false"
+consul_bootstrap: "false"
+consul_ui: "false"
