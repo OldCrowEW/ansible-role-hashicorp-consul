@@ -13,6 +13,7 @@ WorkingDirectory={{ consul_run_dir }}
 User={{ consul_user }}
 Group={{ consul_group }}
 PermissionsStartOnly=true
+RuntimeDirectory={{ consul_systemd_runtime_dir }}
 EnvironmentFile=-{{ consul_sysconfig }}
 ExecStart={{ consul_exec }} agent -config-file={{ consul_config }} -config-dir={{ consul_confd_dir }} $CMD_OPTS
 ExecReload={{ consul_exec_reload }}

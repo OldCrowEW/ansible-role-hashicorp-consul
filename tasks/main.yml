@@ -61,11 +61,6 @@
     owner: "{{ consul_user }}"
     group: "{{ consul_group }}"
 
-- name: Ensure Hashicorp Consul {{ consul_run_dir }} directory exists
-  file:
-    path: "{{ consul_run_dir }}"
-    state: directory
-
 - name: Copy Hashicorp Consul Systemd Unit file
   template:
     src: consul-service.j2
