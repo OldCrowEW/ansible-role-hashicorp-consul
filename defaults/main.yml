@@ -12,6 +12,7 @@ consul_download: "https://releases.hashicorp.com/consul/{{ consul_version }}/con
 
 sysconfdir: "/etc"
 sysconfig_dir: "{{ sysconfdir }}/sysconfig"
+default_dir: "{{ sysconfdir }}/default"
 localstatedir: "/var"
 sharedstatedir: "{{ localstatedir }}/lib"
 sbindir: "/usr/sbin"
@@ -25,6 +26,7 @@ consul_confd_dir: "{{ consul_conf_dir }}/conf.d"
 
 consul_config: "{{ consul_conf_dir }}/{{ consul_service }}.hcl"
 consul_sysconfig: "{{ sysconfig_dir }}/{{ consul_service }}"
+consul_default_config: "{{ default_dir }}/{{ consul_service }}"
 consul_systemd_file: "{{ unitdir }}/{{ consul_service }}.service"
 consul_systemd_runtime_dir: "{{ consul_service }}"
 
