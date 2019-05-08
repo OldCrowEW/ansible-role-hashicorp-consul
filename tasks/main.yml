@@ -14,16 +14,17 @@
     system: true
 
 - name: Ensure unzip package is available for Ansible unarchive task
-  yum:
+  package:
     name: unzip
     state: present
-  when: ansible_distribution != 'Debian' or ansible_distribution != 'Ubuntu'
 
 - name: Download and extract Hashicorp Consul
   unarchive:
     src: "{{ consul_download }}"
     dest: "{{ sbindir }}"
     remote_src: true
+  args:
+    creates: "{{ consul_exec }}"
   register: consul_download_result
   until: consul_download_result is succeeded
 
@@ -53,6 +54,14 @@
     src: consul-sysconfig.j2
     dest: "{{ consul_sysconfig }}"
   notify: restart-consul
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+- name: Copy Hashicorp {{ consul_default_config }} configuration
+  template:
+    src: consul-sysconfig.j2
+    dest: "{{ consul_default_config }}"
+  notify: restart-consul
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
 - name: Ensure Hashicorp Consul {{ consul_data_dir }} directory exists
   file:
@@ -60,11 +69,6 @@
     state: directory
     owner: "{{ consul_user }}"
     group: "{{ consul_group }}"
-
-- name: Ensure Hashicorp Consul {{ consul_run_dir }} directory exists
-  file:
-    path: "{{ consul_run_dir }}"
-    state: directory
 
 - name: Copy Hashicorp Consul Systemd Unit file
   template:
