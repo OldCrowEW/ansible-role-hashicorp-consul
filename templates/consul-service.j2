@@ -14,7 +14,12 @@ User={{ consul_user }}
 Group={{ consul_group }}
 PermissionsStartOnly=true
 RuntimeDirectory={{ consul_systemd_runtime_dir }}
+{% if ansible_os_family == "Debian" or ansible_os_family == "Ubuntu" %}
+EnvironmentFile=-{{ consul_default_config }}
+{% endif %}
+{% if ansible_distribution == "CentOS" or ansible_distribution == "Red Hat Enterprise Linux" %}
 EnvironmentFile=-{{ consul_sysconfig }}
+{% endif %}
 ExecStart={{ consul_exec }} agent -config-file={{ consul_config }} -config-dir={{ consul_confd_dir }} $CMD_OPTS
 ExecReload={{ consul_exec_reload }}
 KillMode=process
