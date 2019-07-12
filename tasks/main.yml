@@ -75,6 +75,12 @@
     src: consul-service.j2
     dest: "{{ consul_systemd_file }}"
   notify: restart-consul
+  when:
+    ansible_distribution == 'CentOS'
+    or ansible_distribution == 'Red Hat Enterprise Linux'
+    or ansible_distribution == 'Debian'
+    or ansible_distribution == 'Ubuntu'
+    and ansible_distribution_release != 'trusty'
 
 - meta: flush_handlers
 
@@ -83,3 +89,9 @@
     name: consul
     state: started
     enabled: true
+  when:
+    ansible_distribution == 'CentOS'
+    or ansible_distribution == 'Red Hat Enterprise Linux'
+    or ansible_distribution == 'Debian'
+    or ansible_distribution == 'Ubuntu'
+    and consul_systemd_enabled != 'false'
