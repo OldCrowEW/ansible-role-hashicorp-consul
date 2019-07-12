@@ -2,6 +2,8 @@
 # defaults file for ansible-role-hashicorp-consul
 consul_service: "consul"
 consul_user: "consul"
+consul_user_is_system: "true"
+consul_user_shell: "/sbin/nologin"
 consul_group: "consul"
 
 consul_version: "1.4.4"

@@ -8,10 +8,10 @@
 - name: Ensure {{ consul_user }} user exists
   user:
     name: "{{ consul_user }}"
-    shell: "/sbin/nologin"
+    shell: "{{ consul_user_shell }}"
     home: "{{ consul_run_dir }}"
     group: "{{ consul_group }}"
-    system: true
+    system: "{{ consul_user_is_system }}"
 
 - name: Ensure unzip package is available for Ansible unarchive task
   package:
