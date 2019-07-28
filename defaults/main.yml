@@ -4,7 +4,7 @@ consul_service: "consul"
 consul_user: "consul"
 consul_group: "consul"
 
-consul_version: "1.4.4"
+consul_version: "1.5.3"
 consul_os: "linux"
 consul_arch: "amd64"
 
