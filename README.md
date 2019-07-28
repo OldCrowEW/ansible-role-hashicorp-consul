@@ -13,7 +13,7 @@ You must have the unzip package installed on target machine for unarchive task t
 
 ## Role Variables
 
-So many vars. Var all the things! Although this role only currently supports CentOS 7, it can easily be used on say a
+So many vars. Var all the things! Although this role only currently supports CentOS 7 & Ubuntu 18, it can easily be used on say a
 raspberry pi by having a playbook such as:
 
     - hosts: consul
@@ -34,6 +34,39 @@ None.
     - hosts: servers
       roles:
          - { role: ansible-role-hashicorp-consul }
+
+Slightly more complex server and client
+
+    - name: install the consul service as a server
+      hosts: consul-server
+      roles:
+      - role: consul
+        consul_user: "ubuntu"
+        consul_group: "ubuntu"
+        consul_user_is_system: "false"
+        consul_run_dir: "/home/ubuntu"
+        consul_user_shell: "/bin/bash"
+        consul_version: "1.5.2"
+        consul_command_opts: "-server -bootstrap -ui"
+        consul_wan_join_addr: "consul-server.example-site2.com"
+        consul_lan_join_addr: "consul-server.example.com"
+        consul_systemd_enabled: "false"
+        consul_datacenter: "dc1"
+
+    - name: install the consul service as an agent on all other machines
+      hosts: clients
+      roles:
+      - role: consul
+        consul_user: "ubuntu"
+        consul_group: "ubuntu"
+        consul_user_is_system: "false"
+        consul_run_dir: "/home/ubuntu"
+        consul_user_shell: "/bin/bash"
+        consul_version: "1.5.2"
+        consul_command_opts: ""
+        consul_lan_join_addr: "consul-server.example.com"
+        consul_systemd_enabled: "false"
+        consul_datacenter: "dc1"
 
 ## License
 
