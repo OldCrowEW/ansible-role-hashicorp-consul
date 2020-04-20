@@ -2,6 +2,8 @@ import os
 
 import testinfra.utils.ansible_runner
 
+import re
+
 testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
     os.environ['MOLECULE_INVENTORY_FILE']).get_hosts('all')
 
@@ -20,6 +22,11 @@ def test_consul_bin_file(host):
 
     assert f.exists
     assert f.is_file
+
+
+def test_consul_ver(host):
+    consul_ver = host.check_output('/usr/sbin/consul --version')
+    assert re.match("^Consul v1.7.2", consul_ver)
 
 
 def test_consul_conf_dir(host):
