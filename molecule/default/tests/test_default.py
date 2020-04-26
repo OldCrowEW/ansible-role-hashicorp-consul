@@ -88,7 +88,26 @@ def test_consul_systemd_file(host):
 
 
 def test_consul_running_and_enabled(host):
-    service = host.service('consul')
+    consul_service = host.service('consul')
 
-    assert service.is_running
-    assert service.is_enabled
+    assert consul_service.is_running
+    assert consul_service.is_enabled
+
+
+def test_dnsmasq_install(host):
+    dnsmasq_pkg = host.package('dnsmasq')
+
+    assert dnsmasq_pkg.is_installed
+
+
+def test_dnsmasq_consul_config(host):
+    dnsmasq_consul_config = host.file('/etc/dnsmasq.d/10-consul')
+
+    assert dnsmasq_consul_config.is_file
+
+
+def test_dnsmasq_running_and_enabled(host):
+    dnsmasq_service = host.service('dnsmasq')
+
+    assert dnsmasq_service.is_running
+    assert dnsmasq_service.is_enabled

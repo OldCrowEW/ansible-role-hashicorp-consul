@@ -8,3 +8,8 @@
 
 - name: remove-consul
   include_tasks: remove-consul.yml
+
+- name: dnsmasq-restart
+  service:
+    name: "{{ dnsmasq_service }}"
+    state: restarted

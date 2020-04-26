@@ -97,3 +97,7 @@
     name: "{{ consul_service }}"
     state: started
     enabled: true
+
+- name: Install dnsmasq for Hashicorp Consul Service Discovery via DNS
+  include_tasks: install-dnsmasq.yml
+  when: dnsmasq_enabled is true
