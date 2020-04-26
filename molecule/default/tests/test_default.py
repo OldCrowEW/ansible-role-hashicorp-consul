@@ -62,6 +62,13 @@ def test_consul_sysconfig(host):
     assert f.is_file
 
 
+# def test_consul_default_config(host):
+#     f = host.file('/etc/default/consul')
+#
+#     assert f.exists
+#     assert f.is_file
+#
+#
 def test_consul_data_dir(host):
     f = host.file('/var/lib/consul')
 

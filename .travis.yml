@@ -3,6 +3,11 @@ language: python
 services:
   - docker
 
+env:
+  matrix:
+    - MOLECULE_DISTRO: centos7
+    - MOLECULE_DISTRO: ubuntu1804
+
 # Install python-pip
 addons:
   apt:
