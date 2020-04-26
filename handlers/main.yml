@@ -5,7 +5,6 @@
     name: consul
     state: restarted
     daemon_reload: true
-  when: consul_systemd_enabled
 
 - name: remove-consul
   include_tasks: remove-consul.yml
