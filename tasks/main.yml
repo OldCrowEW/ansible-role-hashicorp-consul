@@ -50,7 +50,7 @@
 - name: Copy Hashicorp {{ consul_config }} configuration
   template:
     src: "{{ consul_config_template }}"
-    dest: "{{ consul_config_file }}"
+    dest: "{{ consul_config }}"
     owner: "{{ consul_user }}"
     group: "{{ consul_group }}"
     mode: "{{ consul_config_mode }}"
