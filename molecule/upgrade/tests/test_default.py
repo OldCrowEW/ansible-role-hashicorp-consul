@@ -55,8 +55,8 @@ def test_consul_confd_dir(host):
     assert f.group == 'consul'
 
 
-def test_consul_default_config(host):
-    f = host.file('/etc/default/consul')
+def test_consul_sysconfig(host):
+    f = host.file('/etc/sysconfig/consul')
 
     assert f.exists
     assert f.is_file

@@ -1,0 +1,25 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: Include vars of stuff.yaml into the 'stuff' variable (2.2).
+      include_vars:
+        file: ../../defaults/main.yml
+    - name: Ensure unzip package is available for Ansible unarchive task
+      package:
+        name: unzip
+        state: present
+    - name: Download and extract Hashicorp Consul
+      unarchive:
+        src: "https://releases.hashicorp.com/consul/1.7.1/consul_1.7.1_linux_amd64.zip"
+        dest: "{{ sbindir }}"
+        remote_src: "true"
+    - name: Copy Hashicorp Consul Systemd Unit file
+      template:
+        src: "../../templates/consul-service.j2"
+        dest: "{{ consul_systemd_file }}"
+    - name: Start consul
+      systemd:
+        name: consul
+        state: started
+        daemon_reload: true
