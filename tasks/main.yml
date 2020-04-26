@@ -1,5 +1,19 @@
 ---
 # tasks file for ansible-role-hashicorp-consul
+- name: Check status of Hashicorp Consul binary
+  stat:
+    path: "{{ consul_exec }}"
+  register: bin_results
+
+- name: Ensure desired Consul v{{ consul_version }} is installed
+  command: "{{ consul_ver_cmd }}"
+  register: version_check
+  changed_when: "version_check.rc != 0 or target_version not in version_check.stdout"
+  when: "bin_results.stat.exists"
+  notify: "remove-consul"
+
+- meta: flush_handlers
+
 - name: Ensure {{ consul_group }} group exists
   group:
     name: "{{ consul_group }}"
@@ -49,19 +63,19 @@
     group: "{{ consul_group }}"
     state: directory
 
-- name: Copy Hashicorp {{ consul_sysconfig }} configuration
-  template:
-    src: consul-sysconfig.j2
-    dest: "{{ consul_sysconfig }}"
-  notify: restart-consul
-  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
-
 - name: Copy Hashicorp {{ consul_default_config }} configuration
   template:
     src: consul-sysconfig.j2
     dest: "{{ consul_default_config }}"
   notify: restart-consul
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+- name: Copy Hashicorp {{ consul_sysconfig }} configuration
+  template:
+    src: consul-sysconfig.j2
+    dest: "{{ consul_sysconfig }}"
+  notify: restart-consul
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
 
 - name: Ensure Hashicorp Consul {{ consul_data_dir }} directory exists
   file:

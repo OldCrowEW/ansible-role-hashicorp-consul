@@ -1,0 +1,14 @@
+---
+- name: Populate host service facts
+  service_facts:
+
+- name: Ensure Hashicorp Consul is stopped
+  service:
+    name: "{{ consul_service }}"
+    state: stopped
+  when: "'consul.service' in services"
+
+- name: Ensure undesired Hashicorp Consul binary is absent
+  file:
+    path: "{{ consul_exec }}"
+    state: absent

@@ -6,6 +6,7 @@ consul_user_is_system: "true"
 consul_user_shell: "/sbin/nologin"
 consul_group: "consul"
 
+target_version: "{{ consul_version }}"
 consul_version: "1.7.2"
 consul_os: "linux"
 consul_arch: "amd64"
@@ -44,3 +45,5 @@ consul_wan_join_addr: ""
 consul_lan_join_addr: "0.0.0.0"
 consul_datacenter: "dc1"
 consul_http_port: "8500"
+
+consul_ver_cmd: "/usr/sbin/consul --version"
