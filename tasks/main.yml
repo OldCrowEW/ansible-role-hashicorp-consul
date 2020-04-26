@@ -53,7 +53,7 @@
     dest: "{{ consul_config }}"
     owner: "{{ consul_user }}"
     group: "{{ consul_group }}"
-    mode: 0640
+    mode: "{{ consul_config_mode }}"
   notify: restart-consul
 
 - name: Ensure Hashicorp Consul {{ consul_confd_dir }} directory exists
