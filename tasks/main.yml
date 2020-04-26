@@ -47,10 +47,10 @@
     path: "{{ consul_conf_dir }}"
     state: directory
 
-- name: Copy Hashicorp {{ consul_config }} configuration
+- name: Copy Hashicorp {{ consul_config_file }} configuration
   template:
     src: "{{ consul_config_template }}"
-    dest: "{{ consul_config }}"
+    dest: "{{ consul_config_file }}"
     owner: "{{ consul_user }}"
     group: "{{ consul_group }}"
     mode: "{{ consul_config_mode }}"

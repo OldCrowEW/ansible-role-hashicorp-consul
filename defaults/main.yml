@@ -27,10 +27,9 @@ consul_run_dir: "{{ rundir }}/{{ consul_service }}"
 consul_conf_dir: "{{ sysconfdir }}/{{ consul_service }}"
 consul_confd_dir: "{{ consul_conf_dir }}/conf.d"
 
-# TODO: Figure out why this causes ensure user exists task to fail idempotence
-consul_config_thing: "{{ consul_service }}.hcl"
-consul_config_template: "{{ consul_config_thing }}.j2"
-consul_config: "{{ consul_conf_dir }}/{{ consul_config_thing }}"
+consul_config: "{{ consul_service }}.hcl"
+consul_config_template: "{{ consul_config }}.j2"
+consul_config_file: "{{ consul_conf_dir }}/{{ consul_config }}"
 consul_config_mode: "0640"
 
 consul_sys_default_template: "consul_sys_defaults.j2"
