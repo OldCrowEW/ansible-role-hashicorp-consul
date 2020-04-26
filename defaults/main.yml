@@ -69,3 +69,4 @@ dnsmasq_notify_restart: "{{ dnsmasq_service }}-restart"
 dnsmasq_service_name: "{{ dnsmasq_service }}"
 dnsmasq_service_state: "started"
 dnsmasq_service_enabled: "true"
+system_resolved_enabled: true

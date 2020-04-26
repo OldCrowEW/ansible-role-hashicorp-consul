@@ -4,7 +4,7 @@
     name: systemd-resolved
     state: stopped
     enabled: no
-  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu' and system_resolved_enabled is false
 
 - name: Install dnsmasq
   package:
