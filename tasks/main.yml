@@ -65,14 +65,14 @@
 
 - name: Copy Hashicorp {{ consul_default_config }} configuration
   template:
-    src: consul-sysconfig.j2
+    src: "{{ consul_sys_default_template }}"
     dest: "{{ consul_default_config }}"
   notify: restart-consul
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
 - name: Copy Hashicorp {{ consul_sysconfig }} configuration
   template:
-    src: consul-sysconfig.j2
+    src: "{{ consul_sys_default_template }}"
     dest: "{{ consul_sysconfig }}"
   notify: restart-consul
   when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
