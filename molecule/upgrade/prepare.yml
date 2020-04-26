@@ -2,6 +2,10 @@
 - name: Converge
   hosts: all
   tasks:
+    - name: Update Ubuntu Apt cache
+      apt:
+        update_cache: yes
+      when: ansible_distribution == 'Ubuntu'
     - name: Include vars of stuff.yaml into the 'stuff' variable (2.2).
       include_vars:
         file: ../../defaults/main.yml
