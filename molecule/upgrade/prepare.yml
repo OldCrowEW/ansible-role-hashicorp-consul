@@ -2,6 +2,10 @@
 - name: Converge
   hosts: all
   tasks:
+    - name: Update Ubuntu Apt cache
+      apt:
+        update_cache: yes
+      when: ansible_distribution == 'Ubuntu'
     - name: Include vars of stuff.yaml into the 'stuff' variable (2.2).
       include_vars:
         file: ../../defaults/main.yml
@@ -16,7 +20,7 @@
         remote_src: "true"
     - name: Copy Hashicorp Consul Systemd Unit file
       template:
-        src: "../../templates/consul-service.j2"
+        src: "../../templates/{{ consul_systemd_template }}"
         dest: "{{ consul_systemd_file }}"
     - name: Start consul
       systemd:

@@ -1,0 +1,30 @@
+---
+# TODO: Fix this properly
+- name: Ensure systemd-resolved is disabled
+  service:
+    name: systemd-resolved
+    state: stopped
+    enabled: no
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+- name: Install dnsmasq
+  package:
+    name: "{{ dnsmasq_install_pkg }}"
+    state: "{{ dnsmasq_install_state }}"
+  register: dnsmasq_install_retries_reg
+  retries: "{{ dnsmasq_install_retries }}"
+  until: dnsmasq_install_retries_reg is success
+
+- name: Copy dnsmasq consul domain config
+  template:
+    src: "{{ dnsmasq_conf_template_file }}"
+    dest: "{{ dnsmasq_conf_consul_file }}"
+  notify: "{{ dnsmasq_notify_restart }}"
+
+- meta: flush_handlers
+
+- name: Ensure dnsmasq is started and enabled
+  service:
+    name: "{{ dnsmasq_service_name }}"
+    state: "{{ dnsmasq_service_state }}"
+    enabled: "{{ dnsmasq_service_enabled }}"

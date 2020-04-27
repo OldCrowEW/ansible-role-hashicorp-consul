@@ -47,10 +47,10 @@
     path: "{{ consul_conf_dir }}"
     state: directory
 
-- name: Copy Hashicorp {{ consul_config }} configuration
+- name: Copy Hashicorp {{ consul_config_file }} configuration
   template:
-    src: consul-hcl.j2
-    dest: "{{ consul_config }}"
+    src: "{{ consul_config_template }}"
+    dest: "{{ consul_config_file }}"
     owner: "{{ consul_user }}"
     group: "{{ consul_group }}"
     mode: "{{ consul_config_mode }}"
@@ -65,14 +65,14 @@
 
 - name: Copy Hashicorp {{ consul_default_config }} configuration
   template:
-    src: consul-sysconfig.j2
+    src: "{{ consul_sys_default_template }}"
     dest: "{{ consul_default_config }}"
   notify: restart-consul
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
 - name: Copy Hashicorp {{ consul_sysconfig }} configuration
   template:
-    src: consul-sysconfig.j2
+    src: "{{ consul_sys_default_template }}"
     dest: "{{ consul_sysconfig }}"
   notify: restart-consul
   when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
@@ -86,26 +86,18 @@
 
 - name: Copy Hashicorp Consul Systemd Unit file
   template:
-    src: consul-service.j2
+    src: "{{ consul_systemd_template }}"
     dest: "{{ consul_systemd_file }}"
   notify: restart-consul
-  when:
-    ansible_distribution == 'CentOS'
-    or ansible_distribution == 'Red Hat Enterprise Linux'
-    or ansible_distribution == 'Debian'
-    or ansible_distribution == 'Ubuntu'
-    and ansible_distribution_release != 'trusty'
 
 - meta: flush_handlers
 
 - name: Ensure Hashicorp Consul is started and enabled
   service:
-    name: consul
+    name: "{{ consul_service }}"
     state: started
     enabled: true
-  when:
-    ansible_distribution == 'CentOS'
-    or ansible_distribution == 'Red Hat Enterprise Linux'
-    or ansible_distribution == 'Debian'
-    or ansible_distribution == 'Ubuntu'
-    and consul_systemd_enabled != 'false'
+
+- name: Install dnsmasq for Hashicorp Consul Service Discovery via DNS
+  include_tasks: install-dnsmasq.yml
+  when: dnsmasq_enabled is true

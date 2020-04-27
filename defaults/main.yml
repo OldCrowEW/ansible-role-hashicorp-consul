@@ -27,13 +27,18 @@ consul_run_dir: "{{ rundir }}/{{ consul_service }}"
 consul_conf_dir: "{{ sysconfdir }}/{{ consul_service }}"
 consul_confd_dir: "{{ consul_conf_dir }}/conf.d"
 
-consul_config: "{{ consul_conf_dir }}/{{ consul_service }}.hcl"
+consul_config: "{{ consul_service }}.hcl"
+consul_config_template: "{{ consul_config }}.j2"
+consul_config_file: "{{ consul_conf_dir }}/{{ consul_config }}"
 consul_config_mode: "0640"
+
+consul_sys_default_template: "consul_sys_defaults.j2"
 consul_sysconfig: "{{ sysconfig_dir }}/{{ consul_service }}"
 consul_default_config: "{{ default_dir }}/{{ consul_service }}"
-consul_systemd_enabled: "true"
-consul_systemd_file: "{{ unitdir }}/{{ consul_systemd_file_name }}"
-consul_systemd_file_name: "{{ consul_service }}.service"
+
+consul_systemd: "{{ consul_service }}.service"
+consul_systemd_template: "{{ consul_systemd }}.j2"
+consul_systemd_file: "{{ unitdir }}/{{ consul_systemd }}"
 consul_systemd_runtime_dir: "{{ consul_service }}"
 
 consul_exec: "{{ sbindir }}/{{ consul_service }}"
@@ -48,3 +53,19 @@ consul_wan_join_addr: ""
 consul_lan_join_addr: "0.0.0.0"
 consul_datacenter: "dc1"
 consul_http_port: "8500"
+consul_dns_port: "8600"
+
+# dnsmasq settings
+dnsmasq_enabled: true
+dnsmasq_service: "dnsmasq"
+dnsmasq_install_pkg: "dnsmasq"
+dnsmasq_install_cache_valid: 1800
+dnsmasq_install_state: "present"
+dnsmasq_install_retries: "5"
+dnsmasq_conf_dir: "{{ sysconfdir }}/{{ dnsmasq_service }}.d"
+dnsmasq_conf_template_file: "{{ dnsmasq_service_name }}-{{ consul_service }}.j2"
+dnsmasq_conf_consul_file: "{{ dnsmasq_conf_dir }}/10-{{ consul_service }}"
+dnsmasq_notify_restart: "{{ dnsmasq_service }}-restart"
+dnsmasq_service_name: "{{ dnsmasq_service }}"
+dnsmasq_service_state: "started"
+dnsmasq_service_enabled: "true"

@@ -1,7 +1,0 @@
----
-- name: Prepare
-  hosts: all
-  pre_tasks:
-    - name: update cache
-      apt:
-        update_cache: yes
