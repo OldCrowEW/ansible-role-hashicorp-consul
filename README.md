@@ -68,7 +68,7 @@ Slightly more complex server and client
         consul_systemd_enabled: "false"
         consul_datacenter: "dc1"
 
-Playbook to trigger client join for Consul Servers deployed from [https://github.com/hashicorp/terraform-aws-consul/](https://github.com/hashicorp/terraform-aws-consul/)
+Playbook to trigger client join for Consul Servers deployed from [Terraform AWS Consul](https://github.com/hashicorp/terraform-aws-consul/)
 
     - name: Install Hashicorp Consul Client role
       hosts: clients
