@@ -73,11 +73,11 @@ Playbook to trigger client join for Consul Servers deployed from [Terraform AWS 
     - name: Install Hashicorp Consul Client role
       hosts: clients
       roles:
-        - role: consul
-          consul_command_opts: ""
-          consul_start_join_enabled: "false"
-          consul_retry_join_enabled: "true"
-          consul_datacenter: "us-east-1"
+      - role: consul
+        consul_command_opts: ""
+        consul_start_join_enabled: "false"
+        consul_retry_join_enabled: "true"
+        consul_datacenter: "us-east-1"
 
 ## License
 
