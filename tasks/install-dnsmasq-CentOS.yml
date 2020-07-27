@@ -1,14 +1,6 @@
 ---
-# TODO: Fix this properly
-- name: Ensure systemd-resolved is disabled
-  service:
-    name: systemd-resolved
-    state: stopped
-    enabled: no
-  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
-
 - name: Install dnsmasq
-  package:
+  yum:
     name: "{{ dnsmasq_install_pkg }}"
     state: "{{ dnsmasq_install_state }}"
   register: dnsmasq_install_retries_reg

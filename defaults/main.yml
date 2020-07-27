@@ -58,16 +58,34 @@ consul_http_port: "8500"
 consul_dns_port: "8600"
 
 # dnsmasq settings
-dnsmasq_enabled: true
+dnsmasq_enabled: true  # must be bare
 dnsmasq_service: "dnsmasq"
 dnsmasq_install_pkg: "dnsmasq"
-dnsmasq_install_cache_valid: 1800
+dnsmasq_install_cache_valid_time: "1800"
 dnsmasq_install_state: "present"
 dnsmasq_install_retries: "5"
 dnsmasq_conf_dir: "{{ sysconfdir }}/{{ dnsmasq_service }}.d"
 dnsmasq_conf_template_file: "{{ dnsmasq_service_name }}-{{ consul_service }}.j2"
 dnsmasq_conf_consul_file: "{{ dnsmasq_conf_dir }}/10-{{ consul_service }}"
-dnsmasq_notify_restart: "{{ dnsmasq_service }}-restart"
+dnsmasq_notify_restart: "restart-{{ dnsmasq_service }}"
 dnsmasq_service_name: "{{ dnsmasq_service }}"
 dnsmasq_service_state: "started"
 dnsmasq_service_enabled: "true"
+
+# systemd-resolved settings
+systemd_resolved_service: "systemd-resolved"
+systemd_resolved_conf: "/etc/systemd/resolved.conf"
+systemd_resolved_regexp: "^#DNSStubListener="
+systemd_resolved_line: "DNSStubListener=no"
+systemd_resolved_restart: "restart-{{ systemd_resolved_service }}"
+systemd_resolved_service_name: "{{ systemd_resolved_service }}"
+systemd_resolved_service_state: "started"
+systemd_resolved_service_enabled: "true"
+
+# system resolv.conf settings
+resolv_conf: resolv.conf
+systemd_resolve_resolv_conf: "{{ resolv_conf }}"
+resolv_conf_file: "/etc/{{ resolv_conf }}"
+systemd_resolve_resolv_file: "/run/systemd/resolve/{{ systemd_resolve_resolv_conf }}"
+resolv_conf_file_state: "link"
+resolv_conf_file_link_force: "yes"

@@ -99,5 +99,5 @@
     enabled: true
 
 - name: Install dnsmasq for Hashicorp Consul Service Discovery via DNS
-  include_tasks: install-dnsmasq.yml
+  include_tasks: "install-dnsmasq-{{ ansible_distribution }}.yml"
   when: dnsmasq_enabled is true

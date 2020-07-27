@@ -9,7 +9,12 @@
 - name: remove-consul
   include_tasks: remove-consul.yml
 
-- name: dnsmasq-restart
+- name: restart-systemd-resolved
+  service:
+    name: systemd-resolved
+    state: restarted
+
+- name: restart-dnsmasq
   service:
     name: "{{ dnsmasq_service }}"
     state: restarted
