@@ -26,7 +26,7 @@ def test_consul_bin(host):
 
 def test_consul_bin_ver(host):
     consul_bin_ver = host.check_output('/usr/sbin/consul --version')
-    assert re.match("^Consul v1.7.2", consul_bin_ver)
+    assert re.match("^Consul v1.8.0", consul_bin_ver)
 
 
 def test_consul_conf_dir(host):
