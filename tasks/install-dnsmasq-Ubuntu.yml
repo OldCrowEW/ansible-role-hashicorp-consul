@@ -8,17 +8,25 @@
   retries: "{{ dnsmasq_install_retries }}"
   until: dnsmasq_install_retries_reg is success
 
+- name: Copy dnsmasq config
+  template:
+    src: dnsmasq.conf.j2
+    dest: /etc/dnsmasq.conf
+  when: dnsmasq_server is defined
+
 - name: Copy dnsmasq consul domain config
   template:
     src: "{{ dnsmasq_conf_template_file }}"
     dest: "{{ dnsmasq_conf_consul_file }}"
   notify: "{{ dnsmasq_notify_restart }}"
 
+# This must be disabled while using test platform docker
 - name: Create Netplan custom dns config
   template:
     src: "{{ netplan_custom_dns_template }}"
     dest: "{{ netplan_custom_dns_file }}"
   notify: "{{ netplan_custom_dns_notify }}"
+  tags: molecule-notest
 
 # This must be disabled while using test platform docker
 - name: Ensure Symlink {{ resolv_conf_file }} ==> {{ systemd_resolve_resolv_file }}
