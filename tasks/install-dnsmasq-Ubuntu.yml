@@ -14,17 +14,11 @@
     dest: "{{ dnsmasq_conf_consul_file }}"
   notify: "{{ dnsmasq_notify_restart }}"
 
-# - name: Ensure {{ systemd_resolved_conf }} {{ systemd_resolved_line }}
-#   lineinfile:
-#     path: "{{ systemd_resolved_conf }}"
-#     regexp: "{{ systemd_resolved_regexp }}"
-#     line: "{{ systemd_resolved_line }}"
-#   notify: "{{ systemd_resolved_restart }}"
-
-- name: copy custom net plan
+- name: Create Netplan custom dns config
   template:
-    src: 99-custom-dns.yaml.j2
-    dest: /etc/netplan/99-custom-dns.yaml
+    src: "{{ netplan_custom_dns_template }}"
+    dest: "{{ netplan_custom_dns_file }}"
+  notify: "{{ netplan_custom_dns_notify }}"
 
 # This must be disabled while using test platform docker
 - name: Ensure Symlink {{ resolv_conf_file }} ==> {{ systemd_resolve_resolv_file }}

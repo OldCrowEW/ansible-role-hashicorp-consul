@@ -4,6 +4,6 @@ network:
         {{ ansible_default_ipv4.interface }}:         
             nameservers:
                     addresses: 
-                        - 127.0.0.1
+                        - {{ dnsmasq_bind_addr }}
             dhcp4-overrides:
                     use-dns: false

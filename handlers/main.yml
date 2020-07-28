@@ -9,6 +9,9 @@
 - name: remove-consul
   include_tasks: remove-consul.yml
 
+- name: netplan-apply
+  command: netplan apply
+
 - name: restart-systemd-resolved
   service:
     name: systemd-resolved

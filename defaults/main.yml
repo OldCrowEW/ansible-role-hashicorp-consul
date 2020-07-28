@@ -21,6 +21,7 @@ sharedstatedir: "{{ localstatedir }}/lib"
 sbindir: "/usr/sbin"
 rundir: "{{ localstatedir }}/run"
 unitdir: "/lib/systemd/system"
+netplan_dir: "{{ sysconfdir }}/netplan"
 
 consul_data_dir: "{{ sharedstatedir }}/{{ consul_service }}"
 consul_run_dir: "{{ rundir }}/{{ consul_service }}"
@@ -60,6 +61,7 @@ consul_dns_port: "8600"
 # dnsmasq settings
 dnsmasq_enabled: true  # must be bare
 dnsmasq_service: "dnsmasq"
+dnsmasq_bind_addr: "127.0.0.1"
 dnsmasq_install_pkg: "dnsmasq"
 dnsmasq_install_cache_valid_time: "1800"
 dnsmasq_install_state: "present"
@@ -72,11 +74,15 @@ dnsmasq_service_name: "{{ dnsmasq_service }}"
 dnsmasq_service_state: "started"
 dnsmasq_service_enabled: "true"
 
+# netplan custom dns
+netplan_custom_dns: "99-custom-dns"
+netplan_custom_dns_conf: "{{ netplan_custom_dns }}.yaml"
+netplan_custom_dns_template: "{{ netplan_custom_dns_conf }}.j2"
+netplan_custom_dns_file: "{{ netplan_dir }}/{{ netplan_custom_dns_conf }}"
+netplan_custom_dns_notify: "netplan-apply"
+
 # systemd-resolved settings
 systemd_resolved_service: "systemd-resolved"
-systemd_resolved_conf: "/etc/systemd/resolved.conf"
-systemd_resolved_regexp: "^#DNSStubListener="
-systemd_resolved_line: "DNSStubListener=no"
 systemd_resolved_restart: "restart-{{ systemd_resolved_service }}"
 systemd_resolved_service_name: "{{ systemd_resolved_service }}"
 systemd_resolved_service_state: "started"
