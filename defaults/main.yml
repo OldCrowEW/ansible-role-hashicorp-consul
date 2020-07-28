@@ -83,6 +83,9 @@ netplan_custom_dns_notify: "netplan-apply"
 
 # systemd-resolved settings
 systemd_resolved_service: "systemd-resolved"
+systemd_resolved_conf: "{{ sysconfdir }}/systemd/resolved.conf"
+systemd_resolved_regexp: "^#DNSStubListener="
+systemd_resolved_line: "DNSStubListener=no"
 systemd_resolved_restart: "restart-{{ systemd_resolved_service }}"
 systemd_resolved_service_name: "{{ systemd_resolved_service }}"
 systemd_resolved_service_state: "started"

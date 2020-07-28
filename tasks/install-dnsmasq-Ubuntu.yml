@@ -21,6 +21,13 @@
     dest: "{{ dnsmasq_conf_consul_file }}"
   notify: "{{ dnsmasq_notify_restart }}"
 
+- name: Ensure {{ systemd_resolved_conf }} {{ systemd_resolved_line }}
+  lineinfile:
+    path: "{{ systemd_resolved_conf }}"
+    regexp: "{{ systemd_resolved_regexp }}"
+    line: "{{ systemd_resolved_line }}"
+  notify: "{{ systemd_resolved_restart }}"
+
 # This must be disabled while using test platform docker
 - name: Create Netplan custom dns config
   template:
