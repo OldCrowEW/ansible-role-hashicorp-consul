@@ -12,6 +12,7 @@
   template:
     src: dnsmasq.conf.j2
     dest: /etc/dnsmasq.conf
+  notify: "{{ dnsmasq_notify_restart }}"
   when: dnsmasq_server is defined
 
 - name: Copy dnsmasq consul domain config
