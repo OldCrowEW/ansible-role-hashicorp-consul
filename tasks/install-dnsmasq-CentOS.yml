@@ -7,6 +7,13 @@
   retries: "{{ dnsmasq_install_retries }}"
   until: dnsmasq_install_retries_reg is success
 
+- name: Copy dnsmasq config
+  template:
+    src: "{{ dnsmasq_conf_template }}"
+    dest: "{{ dnsmasq_conf_file }}"
+  notify: "{{ dnsmasq_notify_restart }}"
+  when: dnsmasq_server is defined
+
 - name: Copy dnsmasq consul domain config
   template:
     src: "{{ dnsmasq_conf_template_file }}"
