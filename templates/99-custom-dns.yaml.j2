@@ -1,0 +1,9 @@
+network:
+    version: 2
+    ethernets:
+        {{ ansible_default_ipv4.interface }}:         
+            nameservers:
+                    addresses: 
+                        - {{ dnsmasq_bind_addr }}
+            dhcp4-overrides:
+                    use-dns: false

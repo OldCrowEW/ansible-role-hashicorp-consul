@@ -1,0 +1,61 @@
+---
+- name: Install dnsmasq
+  apt:
+    name: "{{ dnsmasq_install_pkg }}"
+    state: "{{ dnsmasq_install_state }}"
+    cache_valid_time: "{{ dnsmasq_install_cache_valid_time }}"
+  register: dnsmasq_install_retries_reg
+  retries: "{{ dnsmasq_install_retries }}"
+  until: dnsmasq_install_retries_reg is success
+
+- name: Copy dnsmasq config
+  template:
+    src: "{{ dnsmasq_conf_template }}"
+    dest: "{{ dnsmasq_conf_file }}"
+  notify: "{{ dnsmasq_notify_restart }}"
+  when: dnsmasq_server is defined
+
+- name: Copy dnsmasq consul domain config
+  template:
+    src: "{{ dnsmasq_conf_template_file }}"
+    dest: "{{ dnsmasq_conf_consul_file }}"
+  notify: "{{ dnsmasq_notify_restart }}"
+
+- name: Ensure {{ systemd_resolved_conf }} {{ systemd_resolved_line }}
+  lineinfile:
+    path: "{{ systemd_resolved_conf }}"
+    regexp: "{{ systemd_resolved_regexp }}"
+    line: "{{ systemd_resolved_line }}"
+  notify: "{{ systemd_resolved_restart }}"
+
+# This must be disabled while using test platform docker
+- name: Create Netplan custom dns config
+  template:
+    src: "{{ netplan_custom_dns_template }}"
+    dest: "{{ netplan_custom_dns_file }}"
+  notify: "{{ netplan_custom_dns_notify }}"
+  tags: molecule-notest
+
+# This must be disabled while using test platform docker
+- name: Ensure Symlink {{ resolv_conf_file }} ==> {{ systemd_resolve_resolv_file }}
+  file:
+    src: "{{ systemd_resolve_resolv_file }}"
+    dest: "{{ resolv_conf_file }}"
+    state: "{{ resolv_conf_file_state }}"
+    force: "{{ resolv_conf_file_link_force }}"
+  notify: "{{ systemd_resolved_restart }}"
+  tags: molecule-notest
+
+- meta: flush_handlers
+
+- name: Ensure systemd-resolved is started and enabled
+  service:
+    name: "{{ systemd_resolved_service_name }}"
+    state: "{{ systemd_resolved_service_state }}"
+    enabled: "{{ systemd_resolved_service_enabled }}"
+
+- name: Ensure dnsmasq is started and enabled
+  service:
+    name: "{{ dnsmasq_service_name }}"
+    state: "{{ dnsmasq_service_state }}"
+    enabled: "{{ dnsmasq_service_enabled }}"
