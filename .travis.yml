@@ -17,7 +17,7 @@ addons:
 
 install:
   # Install molecule
-  - pip install ansible ansible-lint docker molecule testinfra yamllint
+  - pip install ansible ansible-lint docker flake8 molecule testinfra yamllint
 
   # Check molecule version
   - molecule --version
