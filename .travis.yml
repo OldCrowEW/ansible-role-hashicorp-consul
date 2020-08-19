@@ -1,7 +1,6 @@
 ---
 language: python
-services:
-  - docker
+services: docker
 
 env:
   matrix:
@@ -18,7 +17,7 @@ addons:
 
 install:
   # Install molecule
-  - pip install ansible ansible-lint docker flake8 molecule testinfra yamllint
+  - pip install ansible ansible-lint docker molecule testinfra yamllint
 
   # Check molecule version
   - molecule --version
