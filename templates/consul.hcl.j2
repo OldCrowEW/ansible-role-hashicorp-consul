@@ -9,7 +9,7 @@
   "start_join": ["{{ consul_lan_join_addr }}"],
   {% endif %}
   {% if consul_retry_join_enabled %}
-  "retry_join": ["provider=aws tag_key=consul-servers tag_value=consul"],
+  "retry_join": ["provider={{ consul_retry_provider }} tag_key={{ consul_retry_tag_key }} tag_value={{ consul_retry_tag_value }}"],
   {% endif %}
   "datacenter": "{{ consul_datacenter }}"
 }

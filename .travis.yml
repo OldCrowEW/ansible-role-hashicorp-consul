@@ -1,7 +1,6 @@
 ---
 language: python
-services:
-  - docker
+services: docker
 
 env:
   matrix:
