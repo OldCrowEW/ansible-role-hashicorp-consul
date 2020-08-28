@@ -11,6 +11,7 @@
   template:
     src: "{{ dnsmasq_conf_template }}"
     dest: "{{ dnsmasq_conf_file }}"
+    mode: "{{ dnsmasq_conf_file_mode }}"
   notify: "{{ dnsmasq_notify_restart }}"
   when: dnsmasq_server is defined
 
@@ -18,6 +19,7 @@
   template:
     src: "{{ dnsmasq_conf_template_file }}"
     dest: "{{ dnsmasq_conf_consul_file }}"
+    mode: "{{ dnsmasq_conf_consul_file_mode }}"
   notify: "{{ dnsmasq_notify_restart }}"
 
 - meta: flush_handlers
