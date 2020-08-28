@@ -22,6 +22,7 @@ def test_consul_bin(host):
 
     assert consul_bin.exists
     assert consul_bin.is_file
+    assert consul_bin.mode == 0o755
 
 
 def test_consul_bin_ver(host):
@@ -33,6 +34,7 @@ def test_consul_conf_dir(host):
     consul_conf_dir = host.file('/etc/consul')
 
     assert consul_conf_dir.exists
+    assert consul_conf_dir.mode == 0o755
     assert consul_conf_dir.is_directory
 
 
@@ -53,6 +55,7 @@ def test_consul_confd_dir(host):
     assert consul_confd_dir.is_directory
     assert consul_confd_dir.user == 'consul'
     assert consul_confd_dir.group == 'consul'
+    assert consul_confd_dir.mode == 0o755
 
 
 def test_consul_sys_defaults(host):
@@ -64,6 +67,7 @@ def test_consul_sys_defaults(host):
         consul_sys_defaults = host(defaults)
         assert consul_sys_defaults.exists
         assert consul_sys_defaults.is_file
+        assert consul_sys_defaults.mode == 0o600
 
 
 def test_consul_data_dir(host):
@@ -71,6 +75,7 @@ def test_consul_data_dir(host):
 
     assert consul_data_dir.exists
     assert consul_data_dir.is_directory
+    assert consul_data_dir.mode == 0o755
 
 
 def test_consul_run_dir(host):
@@ -85,6 +90,7 @@ def test_consul_systemd_file(host):
 
     assert consul_systemd_file.exists
     assert consul_systemd_file.is_file
+    assert consul_systemd_file.mode == 0o666
 
 
 def test_consul_running_and_enabled(host):
@@ -100,10 +106,20 @@ def test_dnsmasq_install(host):
     assert dnsmasq_pkg.is_installed
 
 
+def test_dnsmasq_config(host):
+    dnsmasq_config = host.file('/etc/dnsmasq.conf')
+
+    assert dnsmasq_config.exists
+    assert dnsmasq_config.is_file
+    assert dnsmasq_config.mode == 0o644
+
+
 def test_dnsmasq_consul_config(host):
     dnsmasq_consul_config = host.file('/etc/dnsmasq.d/10-consul')
 
+    assert dnsmasq_consul_config.exists
     assert dnsmasq_consul_config.is_file
+    assert dnsmasq_consul_config.mode == 0o666
 
 
 def test_dnsmasq_running_and_enabled(host):

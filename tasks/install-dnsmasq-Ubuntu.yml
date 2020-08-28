@@ -12,6 +12,7 @@
   template:
     src: "{{ dnsmasq_conf_template }}"
     dest: "{{ dnsmasq_conf_file }}"
+    mode: "{{ dnsmasq_conf_file_mode }}"
   notify: "{{ dnsmasq_notify_restart }}"
   when: dnsmasq_server is defined
 
@@ -19,6 +20,7 @@
   template:
     src: "{{ dnsmasq_conf_template_file }}"
     dest: "{{ dnsmasq_conf_consul_file }}"
+    mode: "{{ dnsmasq_conf_consul_file_mode }}"
   notify: "{{ dnsmasq_notify_restart }}"
 
 - name: Ensure {{ systemd_resolved_conf }} {{ systemd_resolved_line }}
@@ -33,6 +35,7 @@
   template:
     src: "{{ netplan_custom_dns_template }}"
     dest: "{{ netplan_custom_dns_file }}"
+    mode: "{{ netplan_custom_dns_file_mode }}"
   notify: "{{ netplan_custom_dns_notify }}"
   tags: molecule-notest
 
@@ -41,6 +44,7 @@
   file:
     src: "{{ systemd_resolve_resolv_file }}"
     dest: "{{ resolv_conf_file }}"
+    mode: "{{ resolv_conf_file_mode }}"
     state: "{{ resolv_conf_file_state }}"
     force: "{{ resolv_conf_file_link_force }}"
   notify: "{{ systemd_resolved_restart }}"

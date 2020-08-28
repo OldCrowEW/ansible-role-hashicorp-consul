@@ -36,6 +36,7 @@
   unarchive:
     src: "{{ consul_download }}"
     dest: "{{ sbindir }}"
+    mode: "{{ consul_exec_mode }}"
     remote_src: true
   args:
     creates: "{{ consul_exec }}"
@@ -45,6 +46,7 @@
 - name: Ensure Hashicorp Consul {{ consul_conf_dir }} directory exists
   file:
     path: "{{ consul_conf_dir }}"
+    mode: "{{ consul_conf_dir_mode }}"
     state: directory
 
 - name: Copy Hashicorp {{ consul_config_file }} configuration
@@ -61,12 +63,14 @@
     path: "{{ consul_confd_dir }}"
     owner: "{{ consul_user }}"
     group: "{{ consul_group }}"
+    mode: "{{ consul_confd_dir_mode }}"
     state: directory
 
 - name: Copy Hashicorp {{ consul_default_config }} configuration
   template:
     src: "{{ consul_sys_default_template }}"
     dest: "{{ consul_default_config }}"
+    mode: "{{ consul_default_config_mode }}"
   notify: restart-consul
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
@@ -74,6 +78,7 @@
   template:
     src: "{{ consul_sys_default_template }}"
     dest: "{{ consul_sysconfig }}"
+    mode: "{{ consul_sysconfig_mode }}"
   notify: restart-consul
   when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
 
@@ -83,11 +88,13 @@
     state: directory
     owner: "{{ consul_user }}"
     group: "{{ consul_group }}"
+    mode: "{{ consul_data_dir_mode }}"
 
 - name: Copy Hashicorp Consul Systemd Unit file
   template:
     src: "{{ consul_systemd_template }}"
     dest: "{{ consul_systemd_file }}"
+    mode: "{{ consul_systemd_file_mode }}"
   notify: restart-consul
 
 - meta: flush_handlers
