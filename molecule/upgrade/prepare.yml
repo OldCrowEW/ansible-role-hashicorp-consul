@@ -6,7 +6,7 @@
       apt:
         update_cache: yes
       when: ansible_distribution == 'Ubuntu'
-    - name: Include vars of stuff.yaml into the 'stuff' variable (2.2).
+    - name: Include vars from defaults/main.yml
       include_vars:
         file: ../../defaults/main.yml
     - name: Ensure unzip package is available for Ansible unarchive task
