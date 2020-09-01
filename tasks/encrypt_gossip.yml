@@ -65,9 +65,10 @@
 
 - name: Copy Hashicorp consol_gossip_config_file configuration
   template:
-    src: "gossip-encryption.json.j2"
-    dest: "/etc/consul/gossip-encryption.json"
+    src: "{{ consul_gossip_encryption_config_template }}"
+    dest: "{{ consul_gossip_encryption_config_file }}"
     owner: "{{ consul_user }}"
     group: "{{ consul_group }}"
-    mode: "{{ consul_config_mode }}"
+    mode: "{{ consul_gossip_encryption_config_mode }}"
+  when: consul_gossip_key is defined
   notify: restart-consul

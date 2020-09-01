@@ -38,9 +38,13 @@ consul_config_file: "{{ consul_conf_dir }}/{{ consul_config }}"
 consul_config_mode: "0640"
 
 # consul gossip encryption
-gossip_encryption_enabled: true
-encrypt_verify_incoming_enable: "true"
-encrypt_verify_outgoing_enable: "true"
+consul_gossip_encryption_enabled: true
+consul_encrypt_verify_incoming_enable: "true"
+consul_encrypt_verify_outgoing_enable: "true"
+consul_gossip_encryption_config_template: "{{ gossip_encryption_config }}.j2"
+consul_gossip_encryption_config: "gossip-encryption.json"
+consul_gossip_encryption_config_file: "{{ consul_conf_dir }}/{{ gossip_encryption_config }}"
+consul_gossip_encryption_config_mode: "400"
 
 consul_sys_default_template: "consul_sys_defaults.j2"
 consul_sysconfig: "{{ sysconfig_dir }}/{{ consul_service }}"

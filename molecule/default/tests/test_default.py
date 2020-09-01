@@ -48,6 +48,16 @@ def test_consul_config(host):
     assert consul_config.mode == 0o640
 
 
+def test_consul_gossip_config(host):
+    consul_gossip_config = host.file('/etc/consul/gossip-encryption.json')
+
+    assert consul_gossip_config.exists
+    assert consul_gossip_config.is_file
+    assert consul_gossip_config.user == 'consul'
+    assert consul_gossip_config.group == 'consul'
+    assert consul_gossip_config.mode == 0o400
+
+
 def test_consul_confd_dir(host):
     consul_confd_dir = host.file('/etc/consul/conf.d')
 

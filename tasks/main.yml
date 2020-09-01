@@ -66,7 +66,7 @@
 
 - name: Include Hashicorp Consul gossip tasks
   include_tasks: "encrypt_gossip.yml"
-  when: gossip_encryption_enabled is true
+  when: consul_gossip_encryption_enabled is true
 
 - name: Ensure Hashicorp Consul {{ consul_confd_dir }} directory exists
   file:
