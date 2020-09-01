@@ -2,8 +2,8 @@
 # File: encrypt_gossip.yml - Gossip encryption tasks for Consul
 # Adapted from https://github.com/ansible-community/ansible-consul/blob/master/tasks/encrypt_gossip.yml
 
-## This section of code is needed to read exist gossip encryption keys. As ported from ansible-community/ansible-consul
-## it not iempotent. Its left in place as is in case others need it and dont care about tests.
+## This section of code is needed to read existing gossip encryption keys. As ported from ansible-community/ansible-consul
+## it's not idempotent. This code is left in place as is in case others need it and don't care about tests.
 # - name: Check for Hashicorp Consul gossip encyption config
 #   stat:
 #     path: /etc/consul/gossip-encryption.json
