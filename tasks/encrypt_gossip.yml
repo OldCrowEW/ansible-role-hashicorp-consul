@@ -1,0 +1,74 @@
+---
+# File: encrypt_gossip.yml - Gossip encryption tasks for Consul
+# Adapted from https://github.com/ansible-community/ansible-consul/blob/master/tasks/encrypt_gossip.yml
+
+## This section of code is needed to read existing gossip encryption keys. As ported from ansible-community/ansible-consul
+## it's not idempotent. This code is left in place as is in case others need it and don't care about tests.
+# - name: Check for Hashicorp Consul gossip encyption config
+#   stat:
+#     path: /etc/consul/gossip-encryption.json
+#   register: gossip_encryption_results
+
+# - block:
+#     - name: Read Hashicorp Consul gossip encyption key from /etc/consul/gossip-encryption.json
+#       shell: 'cat /etc/consul/gossip-encryption.json | grep "encrypt" | sed -E ''s/"encrypt": "(.+)",?/\1/'' | sed ''s/^ *//;s/ *$//'''
+#       register: consul_key_read
+#       run_once: true
+
+#     - name: Save Hashicorp Consul gossip encryption key from existing configuration
+#       set_fact: consul_gossip_key={{ consul_key_read.stdout }}
+
+#   when:
+#     - consul_gossip_key is not defined
+#     # - gossip_encryption_results.stat.exists | bool
+#     - bootstrap_state.stat.exists | bool
+
+# - name: Write Hashicorp Consul gossip encryption key locally for use with new servers
+#   copy:
+#     content: "{{ consul_gossip_key }}"
+#     dest: /tmp/consul_raw.key
+#     mode: "600"
+#   when:
+#     - consul_gossip_key is defined
+#     # - gossip_encryption_results.stat.exists | bool
+#     - bootstrap_state.stat.exists | bool
+#   delegate_to: 127.0.0.1
+
+# - name: Read Hashicorp Consul gossip encryption key for servers that require it
+#   set_fact: consul_gossip_key="{{ lookup('file', '/tmp/consul_raw.key') }}"
+#   when:
+#     - consul_gossip_key is defined
+#     # - gossip_encryption_results.stat.exists | bool
+#     - bootstrap_state.stat.exists | bool
+
+# - name: Delete gossip encryption key file
+#   file:
+#     path: /tmp/consul_raw.key
+#     state: absent
+#   when:
+#     - consul_gossip_key is defined
+#     # - gossip_encryption_results.stat.exists | bool
+#     - bootstrap_state.stat.exists | bool
+#   delegate_to: 127.0.0.1
+
+- block:
+    - name: Generate Hashicorp Consul gossip encryption key
+      shell: "PATH={{ sbindir }}:$PATH consul keygen"
+      register: consul_keygen
+      run_once: true
+
+    - name: Write Hashicorp Consul gossip encryption key to fact
+      set_fact: consul_gossip_key={{ consul_keygen.stdout }}
+  when:
+    - consul_gossip_key is not defined
+    - not bootstrap_state.stat.exists | bool
+
+- name: Copy Hashicorp {{ consul_gossip_encryption_config_file }} configuration
+  template:
+    src: "{{ consul_gossip_encryption_config_template }}"
+    dest: "{{ consul_gossip_encryption_config_file }}"
+    owner: "{{ consul_user }}"
+    group: "{{ consul_group }}"
+    mode: "{{ consul_gossip_encryption_config_mode }}"
+  when: consul_gossip_key is defined
+  notify: restart-consul

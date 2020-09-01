@@ -20,7 +20,7 @@ EnvironmentFile=-{{ consul_default_config }}
 {% if ansible_distribution == "CentOS" or ansible_distribution == "Red Hat Enterprise Linux" %}
 EnvironmentFile=-{{ consul_sysconfig }}
 {% endif %}
-ExecStart={{ consul_exec }} agent -config-file={{ consul_config_file }} -config-dir={{ consul_confd_dir }} $CMD_OPTS
+ExecStart={{ consul_systemd_exec_start }}
 ExecReload={{ consul_exec_reload }}
 KillMode=process
 Restart=on-failure

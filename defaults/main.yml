@@ -28,6 +28,7 @@ consul_data_dir_mode: "755"
 consul_run_dir: "{{ rundir }}/{{ consul_service }}"
 consul_conf_dir: "{{ sysconfdir }}/{{ consul_service }}"
 consul_conf_dir_mode: "755"
+consul_bootstrap_state: "{{ consul_conf_dir }}/.consul_bootstrapped"
 consul_confd_dir: "{{ consul_conf_dir }}/conf.d"
 consul_confd_dir_mode: "755"
 
@@ -35,6 +36,15 @@ consul_config: "{{ consul_service }}.hcl"
 consul_config_template: "{{ consul_config }}.j2"
 consul_config_file: "{{ consul_conf_dir }}/{{ consul_config }}"
 consul_config_mode: "0640"
+
+# consul gossip encryption
+consul_gossip_encryption_enabled: true
+consul_encrypt_verify_incoming_enable: "true"
+consul_encrypt_verify_outgoing_enable: "true"
+consul_gossip_encryption_config_template: "{{ consul_gossip_encryption_config }}.j2"
+consul_gossip_encryption_config: "gossip-encryption.json"
+consul_gossip_encryption_config_file: "{{ consul_conf_dir }}/{{ consul_gossip_encryption_config }}"
+consul_gossip_encryption_config_mode: "400"
 
 consul_sys_default_template: "consul_sys_defaults.j2"
 consul_sysconfig: "{{ sysconfig_dir }}/{{ consul_service }}"
@@ -47,6 +57,7 @@ consul_systemd_template: "{{ consul_systemd }}.j2"
 consul_systemd_file: "{{ unitdir }}/{{ consul_systemd }}"
 consul_systemd_file_mode: "666"
 consul_systemd_runtime_dir: "{{ consul_service }}"
+consul_systemd_exec_start: "{{ consul_exec }} agent -config-dir={{ consul_conf_dir }} -config-dir={{ consul_confd_dir }} $CMD_OPTS"
 
 consul_exec: "{{ sbindir }}/{{ consul_service }}"
 consul_exec_mode: "755"
