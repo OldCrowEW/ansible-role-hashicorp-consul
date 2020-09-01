@@ -1,5 +1,11 @@
 ---
 # tasks file for ansible-role-hashicorp-consul
+- name: Read bootstrapped state
+  stat:
+    path: "{{ consul_bootstrap_state }}"
+  register: bootstrap_state
+  tags: always
+
 - name: Check status of Hashicorp Consul binary
   stat:
     path: "{{ consul_exec }}"
@@ -108,6 +114,13 @@
     name: "{{ consul_service }}"
     state: started
     enabled: true
+
+- name: Create boostrapped state file
+  file:
+    dest: "{{ consul_bootstrap_state }}"
+    state: touch
+    mode: "600"
+  when: not bootstrap_state.stat.exists
 
 - name: Install dnsmasq for Hashicorp Consul Service Discovery via DNS
   include_tasks: "install-dnsmasq-{{ ansible_distribution }}.yml"
