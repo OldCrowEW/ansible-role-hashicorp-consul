@@ -58,6 +58,10 @@
     mode: "{{ consul_config_mode }}"
   notify: restart-consul
 
+- name: Include Hashicorp Consul gossip tasks
+  include_tasks: "encrypt_gossip.yml"
+  when: gossip_encryption_enabled is true
+
 - name: Ensure Hashicorp Consul {{ consul_confd_dir }} directory exists
   file:
     path: "{{ consul_confd_dir }}"
