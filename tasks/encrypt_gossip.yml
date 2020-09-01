@@ -63,7 +63,7 @@
     - consul_gossip_key is not defined
     - not bootstrap_state.stat.exists | bool
 
-- name: Copy Hashicorp consol_gossip_config_file configuration
+- name: Copy Hashicorp {{ consul_gossip_encryption_config_file }} configuration
   template:
     src: "{{ consul_gossip_encryption_config_template }}"
     dest: "{{ consul_gossip_encryption_config_file }}"
