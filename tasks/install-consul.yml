@@ -11,7 +11,7 @@
   when: "bin_results.stat.exists"
   notify: "remove-consul"
 
-- name: Run remote-consul handler tasks if necessary
+- name: Run remove-consul handler tasks if necessary
   meta: flush_handlers
 
 - name: Ensure unzip package is available for Ansible unarchive task
