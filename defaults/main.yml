@@ -32,12 +32,16 @@ consul_conf_dir_mode: "755"
 consul_bootstrap_state: "{{ consul_conf_dir }}/.consul_bootstrapped"
 consul_confd_dir: "{{ consul_conf_dir }}/conf.d"
 consul_confd_dir_mode: "755"
-consul_log_file: "{{ logdir }}/consul.log"
 
 consul_config: "{{ consul_service }}.hcl"
 consul_config_template: "{{ consul_config }}.j2"
 consul_config_file: "{{ consul_conf_dir }}/{{ consul_config }}"
 consul_config_mode: "0640"
+
+consul_log_file: "{{ logdir }}/consul.log"
+consul_log_json: "true"
+consul_log_level: "info"
+consul_log_rotate_duration: "168h"  # 1 week
 
 # consul gossip encryption
 consul_gossip_encryption_enabled: true
