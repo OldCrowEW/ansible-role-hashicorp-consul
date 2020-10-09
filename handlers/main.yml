@@ -21,3 +21,8 @@
   service:
     name: "{{ dnsmasq_service }}"
     state: restarted
+
+- name: restart-systemd-resolved
+  service:
+    name: systemd-resolved
+    state: restarted

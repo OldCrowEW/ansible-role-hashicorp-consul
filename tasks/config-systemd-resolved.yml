@@ -1,0 +1,12 @@
+---
+- name: add iptabes
+  include_tasks: iptables.yml
+
+- name: Configure /etc/systemd/resolved.conf
+  template:
+    src: resolved.conf.j2
+    dest: "/etc/systemd/resolved.conf"
+    owner: root
+    group: root
+    mode:  644
+  notify: restart-systemd-resolved

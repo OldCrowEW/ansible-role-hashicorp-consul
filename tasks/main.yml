@@ -34,13 +34,12 @@
     state: started
     enabled: true
 
+- name: Configure Forward DNS for Hashicorp Consul Service Discovery via DNS
+  include_tasks: "config-forward-dns.yml"
+
 - name: Create boostrapped state file
   file:
     dest: "{{ consul_bootstrap_state }}"
     state: touch
     mode: "600"
   when: not bootstrap_state.stat.exists
-
-- name: Install dnsmasq for Hashicorp Consul Service Discovery via DNS
-  include_tasks: "install-dnsmasq-{{ ansible_distribution }}.yml"
-  when: dnsmasq_enabled is true

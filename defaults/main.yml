@@ -80,7 +80,7 @@ consul_http_port: "8500"
 consul_dns_port: "8600"
 
 # dnsmasq settings
-dnsmasq_enabled: true  # must be bare
+dnsmasq_enabled: false  # must be bare
 dnsmasq_service: "dnsmasq"
 dnsmasq_bind_addr: "127.0.0.1"
 dnsmasq_install_pkg: "dnsmasq"
