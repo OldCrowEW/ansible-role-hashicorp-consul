@@ -6,7 +6,7 @@
   template:
     src: "resolved.conf.j2"
     dest: "/etc/systemd/resolved.conf"
-    owner: root"
+    owner: "root"
     group: "root"
     mode: "644"
   notify: restart-systemd-resolved
