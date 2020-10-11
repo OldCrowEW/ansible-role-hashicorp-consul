@@ -26,3 +26,6 @@
   service:
     name: systemd-resolved
     state: restarted
+
+- name: iptables-save
+  shell: "iptables-save > /etc/iptables/rules.v4"

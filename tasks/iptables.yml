@@ -3,53 +3,61 @@
 # File: iptables.yml - iptables tasks for Consul
 
 - name: Install iptables
-  apt:
+  package:
     name: iptables
     state: present
 
-- name: Install iptables-persistent
+- name: Ensure iptables-persistent installed
   apt:
     name: iptables-persistent
     state: present
+  when: ansible_distribution == 'Ubuntu'
+  notify: iptables-save
 
-- name: Redirect local DNS (1/4)
+- name: Redirect local DNS - PREROUTING - UDP
   iptables:
     table: nat
     chain: PREROUTING
     protocol: udp
     match: udp
-    destination_port: 53
+    destination_port: "{{ systemd_resolved_service_port }}"
     jump: REDIRECT
-    to_ports: 8600
+    to_ports: "{{ consul_dns_port }}"
+  notify: iptables-save
 
-- name: Redirect local DNS (2/4)
+- name: Redirect local DNS - PREROUTING - TCP
   iptables:
     table: nat
     chain: PREROUTING
     protocol: tcp
     match: tcp
-    destination_port: 53
+    destination_port: "{{ systemd_resolved_service_port }}"
     jump: REDIRECT
-    to_ports: 8600
+    to_ports: "{{ consul_dns_port }}"
+  notify: iptables-save
 
-- name: Redirect local DNS (3/4)
+- name: Redirect local DNS - OUTPUT - UDP
   iptables:
     table: nat
     chain: OUTPUT
     protocol: udp
     match: udp
-    destination_port: 53
+    destination_port: "{{ systemd_resolved_service_port }}"
     jump: REDIRECT
-    to_ports: 8600
+    to_ports: "{{ consul_dns_port }}"
     destination: localhost
+  notify: iptables-save
 
-- name: Redirect local DNS (4/4)
+- name: Redirect local DNS - OUTPUT - TCP
   iptables:
     table: nat
     chain: OUTPUT
     protocol: tcp
     match: tcp
-    destination_port: 53
+    destination_port: "{{ systemd_resolved_service_port }}"
     jump: REDIRECT
-    to_ports: 8600
+    to_ports: "{{ consul_dns_port }}"
     destination: localhost
+  notify: iptables-save
+
+- meta: flush_handlers

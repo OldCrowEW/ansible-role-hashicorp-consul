@@ -111,12 +111,20 @@ netplan_custom_dns_notify: "netplan-apply"
 # systemd-resolved settings
 systemd_resolved_service: "systemd-resolved"
 systemd_resolved_conf: "{{ sysconfdir }}/systemd/resolved.conf"
+systemd_resolved_conf_template: "resolved.conf.j2"
+systemd_resolved_conf_owner: "root"
+systemd_resolved_conf_group: "root"
+systemd_resolved_conf_mode: "644"
 systemd_resolved_regexp: "^#DNSStubListener="
 systemd_resolved_line: "DNSStubListener=no"
 systemd_resolved_restart: "restart-{{ systemd_resolved_service }}"
 systemd_resolved_service_name: "{{ systemd_resolved_service }}"
 systemd_resolved_service_state: "started"
 systemd_resolved_service_enabled: "true"
+systemd_resolved_service_port: "53"
+
+# iptables packages
+iptables_packages: iptables
 
 # system resolv.conf settings
 resolv_conf: resolv.conf
