@@ -28,4 +28,4 @@
     state: restarted
 
 - name: iptables-save
-  shell: "iptables-save > /etc/iptables/rules.v4"
+  shell: "iptables-save > {{ iptables_save_rules_v4 }}"

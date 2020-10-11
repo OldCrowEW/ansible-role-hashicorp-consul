@@ -125,6 +125,7 @@ systemd_resolved_service_port: "53"
 
 # iptables packages
 iptables_packages: iptables
+iptables_save_rules_v4: "{{ iptables_save_rules_v4_os }}"
 
 # system resolv.conf settings
 resolv_conf: resolv.conf
