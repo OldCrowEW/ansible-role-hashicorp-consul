@@ -11,11 +11,11 @@ jobs:
         os: [centos8, ubuntu1804, ubuntu2004]
         include:
         - os: centos8
-          MOLECULE_DISTRO: ${{ matrix.os}}
+          MOLECULE_DISTRO: centos8
         - os: ubuntu1804
-          MOLECULE_DISTRO: ${{ matrix.os}}
+          MOLECULE_DISTRO: ubuntu1804
         - os: ubuntu2004
-          MOLECULE_DISTRO: ${{ matrix.os}}
+          MOLECULE_DISTRO: ubuntu2004
   
     steps:
       - name: Checkout role
