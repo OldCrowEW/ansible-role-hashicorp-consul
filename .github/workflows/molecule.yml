@@ -3,13 +3,16 @@ name: Molecule Test
 on: [push, pull_request]
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       max-parallel: 4
       matrix:
-        molecule_distros: ['centos8', 'ubuntu1804', 'ubuntu2004']
-
+        os: [centos8, ubuntu1804, ubuntu2004]
+        include:
+        - os: ${{ matrix.os}}
+          MOLECULE_DISTRO: ${{ matrix.os}}
+          
     steps:
       - name: Checkout role
         uses: actions/checkout@v2
@@ -23,8 +26,8 @@ jobs:
         run: python3 -m pip install ansible ansible-lint flake8 molecule[docker] pytest-testinfra yamllint
 
       - name: Test with molecule
-        run: molecule test -all
+        run: molecule test
         env:
           PY_COLORS: '1'
           ANSIBLE_FORCE_COLORS: '1'
-          MOLECULE_DISTROS: ${{ matrix.molecule_distros }}
+          MOLECULE_DISTRO: ${{ matrix.os}}
