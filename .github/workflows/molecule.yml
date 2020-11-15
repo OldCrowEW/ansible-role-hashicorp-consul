@@ -10,13 +10,13 @@ jobs:
       matrix:
         os: [ubuntu-latest, ubuntu-1804, ubuntu-2004]
         include:
-        - os: ubuntu
-          MOLECULE_DISTRO: centos8
-        - os: ubuntu1804
-          MOLECULE_DISTRO: ubuntu1804
-        - os: ubuntu2004
-          MOLECULE_DISTRO: ubuntu2004
-  
+          - os: ubuntu
+            MOLECULE_DISTRO: centos8
+          - os: ubuntu1804
+            MOLECULE_DISTRO: ubuntu1804
+          - os: ubuntu2004
+            MOLECULE_DISTRO: ubuntu2004
+
     steps:
       - name: Checkout role
         uses: actions/checkout@v2
