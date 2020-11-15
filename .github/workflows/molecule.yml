@@ -24,7 +24,7 @@ jobs:
           sudo apt install docker
           python3 -m pip install --upgrade pip
           # python3 -m pip install -r requirements.txt
-          python3 -m pip install ansible ansible-lint flake8 molecule==3.0.8 docker testinfra yamllint
+          python3 -m pip install ansible ansible-lint flake8 molecule[docker] testinfra yamllint
 
       - name: Test with molecule
         run: molecule test
