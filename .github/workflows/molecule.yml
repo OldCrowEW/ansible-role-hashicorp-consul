@@ -8,9 +8,9 @@ jobs:
       fail-fast: false
       max-parallel: 4
       matrix:
-        os: [centos8, ubuntu1804, ubuntu2004]
+        os: [ubuntu-latest, ubuntu-1804, ubuntu-2004]
         include:
-        - os: centos8
+        - os: ubuntu
           MOLECULE_DISTRO: centos8
         - os: ubuntu1804
           MOLECULE_DISTRO: ubuntu1804
