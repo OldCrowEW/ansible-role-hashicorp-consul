@@ -10,9 +10,13 @@ jobs:
       matrix:
         os: [centos8, ubuntu1804, ubuntu2004]
         include:
-        - os: ${{ matrix.os}}
+        - os: centos8
           MOLECULE_DISTRO: ${{ matrix.os}}
-          
+        - os: ubuntu1804
+          MOLECULE_DISTRO: ${{ matrix.os}}
+        - os: ubuntu2004
+          MOLECULE_DISTRO: ${{ matrix.os}}
+  
     steps:
       - name: Checkout role
         uses: actions/checkout@v2
