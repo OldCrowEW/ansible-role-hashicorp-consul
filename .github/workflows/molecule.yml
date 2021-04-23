@@ -22,7 +22,7 @@ jobs:
           python-version: '3.x'
 
       - name: Install dependencies
-        run: python3 -m pip install ansible ansible-lint flake8 molecule[docker] pytest-testinfra yamllint
+        run: python3 -m pip install ansible==2.10.7 ansible-lint flake8 molecule[docker] pytest-testinfra yamllint
 
       - name: Test with molecule
         run: molecule test
